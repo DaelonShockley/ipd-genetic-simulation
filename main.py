@@ -6,7 +6,7 @@ import math
 table_init_magnitude = 1
 mod_init_magnitude = 0.01
 rounds_per_game = 20
-matches_per_round = 1
+matches_per_round = 2
 
 score_both_coop = 3
 score_both_def = 1
@@ -19,7 +19,7 @@ fittest_gene_prob = .5 #the probability that a gene is taken from the more fit p
 mutation_rate = 0.01 
 max_mutation_magnitude = .2
 
-number_of_rounds = 100
+number_of_rounds = 500
 
 record = False #should fittest be decided by record rather than total score? 
 
@@ -61,7 +61,7 @@ def print_fittest():
 
     sorted_players = sorted_players[:fittest_size]
 
-    print(f"TOP {fittest_size} ALGORITHMS AFTER {number_of_rounds} OF SIMULATION")
+    print(f"TOP {fittest_size} ALGORITHMS AFTER {number_of_rounds} ROUNDS OF SIMULATION")
     for i in range(0, len(sorted_players)):
         print(f"rank {i+1} player")
         print("Decision matrix: ")
