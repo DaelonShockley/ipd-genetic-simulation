@@ -17,6 +17,7 @@ class Player():
         self.rounds_per_game = rounds_per_game
         self.total_score = 0
         self.wins = 0
+        self.losses = 0
         self.draws = 0
 
         self.score_both_coop = score_both_coop

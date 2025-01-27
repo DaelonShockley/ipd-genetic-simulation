@@ -93,11 +93,13 @@ class Game():
 
         if(player1_score > player2_score):
             player1.wins += 1
+            player2.losses += 1
         elif(player1_score == player2_score):
             player1.draws += 1
             player2.draws += 1
         else:
             player2.wins += 1
+            player1.losses += 1
 
         #print("one game simulatied")
 
