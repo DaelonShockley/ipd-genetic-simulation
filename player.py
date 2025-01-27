@@ -3,7 +3,8 @@ import random
 class Player():
     def __init__(self, table_init_magnitude, mod_init_magnitude, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
         #initializes decision matrix with a probability of +/- table_init_weight
-        self.decision_matrix = self.initialize_decision_matrix(self.decision_matrix, table_init_magnitude)
+        self.decision_matrix = []  
+        self.initialize_decision_matrix(table_init_magnitude)
         #initializes all modifier weights to +/- mod_init_magnitude
         self.total_opp_defection_weight = self.initialize_weight(mod_init_magnitude)
         self.opp_defection_rate_weight = self.initialize_weight(mod_init_magnitude)
@@ -16,13 +17,14 @@ class Player():
         self.rounds_per_game = rounds_per_game
         self.total_score = 0
         self.wins = 0
+        self.draws = 0
 
         self.score_both_coop = score_both_coop
         self.score_both_def = score_both_def
-        self.score_player_def = score_both_def
+        self.score_player_def = score_player_def
         self.score_opp_def = score_opp_def
 
-    def initialize_decision_matrix(array, magnitude):
+    def initialize_decision_matrix(self, magnitude):
         """
         fills an empty array with 32 random decimals between 0 and 1
 
@@ -34,9 +36,9 @@ class Player():
         none - the array is modified in place
         """
         for _ in range(32):
-            array.append(random.uniform(0, magnitude))
+            self.decision_matrix.append(random.uniform(0, magnitude))
 
-    def initialize_weight(magnitude):
+    def initialize_weight(self, magnitude):
         """
         fills an empty array with 32 random decimals between 0 and 1
 
@@ -64,8 +66,10 @@ class Player():
         defect (boolean) - true represents that the player will defect, while false represents that the player will cooperate
         """
 
-        opp_defection_rate = total_opp_defection / rounds_played
-        player_defection_rate = total_player_defection / rounds_played
+        #print("getting decision")
+
+        opp_defection_rate = total_opp_defection / max(rounds_played, 1)
+        player_defection_rate = total_player_defection / max(rounds_played, 1)
         rounds_left = self.rounds_per_game - rounds_played
 
         #the history is given as a binary string, so we can convert that string to decimal in order to get the index of the corresponding 
@@ -100,7 +104,7 @@ class Player():
         else:
             return True  # Defect
 
-    def binary_to_decimal(binary_str):
+    def binary_to_decimal(self, binary_str):
         """
         Convert a binary string to a decimal integer.
 
@@ -110,5 +114,8 @@ class Player():
         Returns:
         int: The decimal integer equivalent of the binary string.
         """
+        if binary_str == "":
+            return 0
+
         binary_str = binary_str[-5:]
         return int(binary_str, 2)
