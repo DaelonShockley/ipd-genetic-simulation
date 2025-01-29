@@ -78,6 +78,8 @@ class Genetic():
         new_player.rounds_played_weight =random.choices([player1.rounds_played_weight, player2.rounds_played_weight], weights=weights, k=1)[0]
         new_player.rounds_left_weight =random.choices([player1.rounds_left_weight, player2.rounds_left_weight], weights=weights, k=1)[0]
         new_player.score_diff_weight =random.choices([player1.score_diff_weight, player2.score_diff_weight], weights=weights, k=1)[0]
+        new_player.opp_def_prev_round_weight =random.choices([player1.opp_def_prev_round_weight, player2.opp_def_prev_round_weight], weights=weights, k=1)[0]
+        new_player.player_def_prev_round_weight =random.choices([player1.player_def_prev_round_weight, player2.player_def_prev_round_weight], weights=weights, k=1)[0]
 
         new_player.total_score = 0
         new_player.wins = 0
@@ -119,5 +121,7 @@ class Genetic():
         new_player.rounds_played_weight = mutate_value(new_player.rounds_played_weight)
         new_player.rounds_left_weight = mutate_value(new_player.rounds_left_weight)
         new_player.score_diff_weight = mutate_value(new_player.score_diff_weight)
+        new_player.opp_def_prev_round_weight = mutate_value(new_player.opp_def_prev_round_weight)
+        new_player.player_def_prev_round_weight = mutate_value(new_player.player_def_prev_round_weight)
 
         return new_player

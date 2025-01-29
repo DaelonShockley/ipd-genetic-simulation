@@ -58,11 +58,16 @@ class Game():
         player2_defections = 0
         player1_score = 0
         player2_score = 0
+        player1_defected_last_round = False
+        player2_defected_last_round = False
 
         rounds_played = 0
         while(rounds_played < rounds_per_game):
-            player1_decision = player1.get_decision(history_play_2, player2_defections, player1_defections, rounds_played, player1_score - player2_score)
-            player2_decision = player2.get_decision(history_play_1, player1_defections, player2_defections, rounds_played, player2_score - player1_score)
+            player1_decision = player1.get_decision(history_play_2, player2_defections, player1_defections, rounds_played, player1_score - player2_score, player2_defected_last_round, player1_defected_last_round)
+            player2_decision = player2.get_decision(history_play_1, player1_defections, player2_defections, rounds_played, player2_score - player1_score, player1_defected_last_round, player2_defected_last_round)
+
+            player1_defected_last_round = False
+            player2_defected_last_round = False
 
             #remember that a decision of True means the player is defecting, similarly a "1" in the history represents a defection
             if(not player1_decision and not player2_decision): #both players cooperate
@@ -73,16 +78,20 @@ class Game():
             elif(player1_decision and not player2_decision): #player1 defects, player2 cooperates
                 player1_score += score_player_def
                 player2_score += score_opp_def
+                player1_defected_last_round = True
                 history_play_1 += "1"
                 history_play_2 += "0"
             elif(not player1_decision and player2_decision): #player1 cooperates, player2 defects
                 player1_score += score_opp_def
                 player2_score += score_player_def
+                player2_defected_last_round = True
                 history_play_1 += "0"
                 history_play_2 += "1"
             else: #both players defect
                 player1_score += score_both_def
                 player2_score += score_both_def
+                player1_defected_last_round = True
+                player2_defected_last_round = True
                 history_play_1 += "1"
                 history_play_2 += "1"
 

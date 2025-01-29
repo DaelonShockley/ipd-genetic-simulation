@@ -19,7 +19,9 @@ fittest_gene_prob = .5 #the probability that a gene is taken from the more fit p
 mutation_rate = 0.01 
 max_mutation_magnitude = .2
 
-number_of_rounds = 500
+number_of_rounds = 250
+
+player_memory = 5
 
 record = False #should fittest be decided by record rather than total score? 
 
@@ -80,6 +82,10 @@ def print_fittest():
         print(sorted_players[i].rounds_left_weight)
         print("Score Differential Weight:")
         print(sorted_players[i].score_diff_weight)
+        print("Opponent Defected Last Round Weight:")
+        print(sorted_players[i].opp_def_prev_round_weight)
+        print("Player Defected Last Round Weight:")
+        print(sorted_players[i].player_def_prev_round_weight)
         print("\n")
         print(f"Total score after facing {population_size - 1} opponents {matches_per_round} times")
         print(sorted_players[i].total_score)
@@ -89,7 +95,7 @@ def print_fittest():
 
 players = []
 for _ in range(population_size):
-    player = Player(table_init_magnitude, mod_init_magnitude, rounds_per_game, 
+    player = Player(player_memory, table_init_magnitude, mod_init_magnitude, rounds_per_game, 
                     score_both_coop, score_both_def, score_player_def, score_opp_def)
     players.append(player)
 

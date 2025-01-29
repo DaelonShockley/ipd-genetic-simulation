@@ -1,10 +1,21 @@
 import random
 
 class Player():
-    def __init__(self, table_init_magnitude, mod_init_magnitude, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
+    '''
+    INITIALIZATION PARAMETERS
+    memory (int): the number of opponent decisions the player can remember
+    table_init_magnitude (float): the maximum magnitude which an entry in the decision table can be initialized to
+    mod_init_magnitude (float): the maximum magnitude which a modifier weight can be initialized to
+    rounds_per_game (int): the number of rounds played in a one vs one prioners dilemma (ex. 10 rounds = 10 decisions made by both players)
+    score_both_coop (int): the score given to the player in the event both players cooperate in the round
+    score_both_def (int): the score given to the player in the event both players defect in the round
+    score_player_def (int): the score given to the player in the event that the player defects but the opponent cooperates 
+    score_opp_def (int): the score given to the player in the event that the player cooperates but the opponent defects
+    '''
+    def __init__(self, memory, table_init_magnitude, mod_init_magnitude, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
         #initializes decision matrix with a probability of +/- table_init_weight
         self.decision_matrix = []  
-        self.initialize_decision_matrix(table_init_magnitude)
+        self.initialize_decision_matrix(memory, table_init_magnitude)
         #initializes all modifier weights to +/- mod_init_magnitude
         self.total_opp_defection_weight = self.initialize_weight(mod_init_magnitude)
         self.opp_defection_rate_weight = self.initialize_weight(mod_init_magnitude)
@@ -13,6 +24,8 @@ class Player():
         self.rounds_played_weight = self.initialize_weight(mod_init_magnitude)
         self.rounds_left_weight = self.initialize_weight(mod_init_magnitude)
         self.score_diff_weight = self.initialize_weight(mod_init_magnitude)
+        self.opp_def_prev_round_weight = self.initialize_weight(mod_init_magnitude)
+        self.player_def_prev_round_weight = self.initialize_weight(mod_init_magnitude)
 
         self.rounds_per_game = rounds_per_game
         self.total_score = 0
@@ -25,18 +38,21 @@ class Player():
         self.score_player_def = score_player_def
         self.score_opp_def = score_opp_def
 
-    def initialize_decision_matrix(self, magnitude):
+    def initialize_decision_matrix(self, memory, magnitude):
         """
         fills an empty array with 32 random decimals between 0 and 1
 
         Parameters: 
         array (list): an empty array to be filled with decimal values
         magnitude (float): the maximum value which a decimal in the array can be
+        memory (int): the number of previous rounds the player has access to. Increasing this number could potentially maybe hurt the performance of the simulation a lot (idk use at your own risk). 
 
         returns:
         none - the array is modified in place
         """
-        for _ in range(32):
+        size = 2 ** memory
+
+        for _ in range(size):
             self.decision_matrix.append(random.uniform(0, magnitude))
 
     def initialize_weight(self, magnitude):
@@ -51,7 +67,7 @@ class Player():
         """
         return random.uniform(-magnitude, magnitude)
     
-    def get_decision(self, history, total_opp_defection, total_player_defection, rounds_played, score_diff):
+    def get_decision(self, history, total_opp_defection, total_player_defection, rounds_played, score_diff, opp_defected_last_round, player_defected_last_round):
         """
         gets the decision of the player based off the decision matrix and modifier weights given game history and ongoing values
 
@@ -95,6 +111,8 @@ class Player():
         decision_p += (rounds_played / max_rounds_played) * self.rounds_played_weight
         decision_p += (rounds_left / max_rounds_left) * self.rounds_left_weight
         decision_p += (score_diff / max_score_diff) * self.score_diff_weight
+        decision_p += opp_defected_last_round * self.opp_def_prev_round_weight
+        decision_p += player_defected_last_round * self.player_def_prev_round_weight
 
         # Normalize the probability to stay within [0, 1]
         decision_p = max(0, min(1, decision_p))
