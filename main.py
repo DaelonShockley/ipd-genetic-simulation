@@ -2,6 +2,9 @@ from player import Player
 from game import Game
 from genetic import Genetic
 import math
+import time
+
+start_time = time.time()
  
 table_init_magnitude = 1
 mod_init_magnitude = 0.1
@@ -19,9 +22,9 @@ fittest_gene_prob = .5 #the probability that a gene is taken from the more fit p
 mutation_rate = 0.1 
 max_mutation_magnitude = .5
 
-number_of_rounds = 500
+number_of_rounds = 100
 
-player_memory = 10
+player_memory = 5
 
 record = False #should fittest be decided by record rather than total score? 
 
@@ -135,6 +138,11 @@ Game.run_round(players, matches_per_round, rounds_per_game, score_both_coop, sco
 print_fittest()
 
 run_game_top_two_players(3)
+
+end_time = time.time()
+elapsed_time = end_time - start_time
+
+print(f"Execution time: {elapsed_time:.6f} seconds")
 
 
 
