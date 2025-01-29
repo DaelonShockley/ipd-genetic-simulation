@@ -17,15 +17,16 @@ class Player():
         self.decision_matrix = []  
         self.initialize_decision_matrix(memory, table_init_magnitude)
         #initializes all modifier weights to +/- mod_init_magnitude
-        self.total_opp_defection_weight = self.initialize_weight(mod_init_magnitude)
-        self.opp_defection_rate_weight = self.initialize_weight(mod_init_magnitude)
-        self.total_player_defections_weight = self.initialize_weight(mod_init_magnitude)
-        self.player_defection_rate_weight = self.initialize_weight(mod_init_magnitude)
-        self.rounds_played_weight = self.initialize_weight(mod_init_magnitude)
-        self.rounds_left_weight = self.initialize_weight(mod_init_magnitude)
-        self.score_diff_weight = self.initialize_weight(mod_init_magnitude)
-        self.opp_def_prev_round_weight = self.initialize_weight(mod_init_magnitude)
-        self.player_def_prev_round_weight = self.initialize_weight(mod_init_magnitude)
+        self.total_opp_defection_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.opp_defection_rate_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.total_player_defections_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.player_defection_rate_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.rounds_played_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.rounds_left_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.score_diff_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.opp_def_prev_round_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+        self.player_def_prev_round_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
+
 
         self.rounds_per_game = rounds_per_game
         self.total_score = 0
@@ -50,22 +51,7 @@ class Player():
         returns:
         none - the array is modified in place
         """
-        size = 2 ** memory
-
-        for _ in range(size):
-            self.decision_matrix.append(random.uniform(0.75, magnitude))
-
-    def initialize_weight(self, magnitude):
-        """
-        fills an empty array with 32 random decimals between 0 and 1
-
-        Parameters: 
-        magnitude (float): the maximum magnitude of the value which will be returned
-
-        returns:
-        float - a value between -magnitude and +magnitude
-        """
-        return random.uniform(-magnitude, magnitude)
+        self.decision_matrix = [random.uniform(0.75, magnitude) for _ in range(2 ** memory)]
     
     def get_decision(self, history, total_opp_defection, total_player_defection, rounds_played, score_diff, opp_defected_last_round, player_defected_last_round):
         """
@@ -91,7 +77,7 @@ class Player():
 
         #the history is given as a binary string, so we can convert that string to decimal in order to get the index of the corresponding 
         #probability from the decision matrix
-        ind = self.binary_to_decimal(history)
+        ind = int(history[-5:], 2) if history else 0
         table_p = self.decision_matrix[ind]
 
         # Normalize the modifiers' contributions to ensure all modifiers have the same impact
@@ -123,18 +109,3 @@ class Player():
         else:
             return True  # Defect
 
-    def binary_to_decimal(self, binary_str):
-        """
-        Convert a binary string to a decimal integer.
-
-        Parameters:
-        binary_str (str): The binary string to be converted.
-
-        Returns:
-        int: The decimal integer equivalent of the binary string.
-        """
-        if binary_str == "":
-            return 0
-
-        binary_str = binary_str[-5:]
-        return int(binary_str, 2)

@@ -23,7 +23,7 @@ number_of_rounds = 500
 
 player_memory = 10
 
-record = True #should fittest be decided by record rather than total score? 
+record = False #should fittest be decided by record rather than total score? 
 
 '''
 player1 = Player(1, 0.01, 20, 2, 1, 3, 0)
