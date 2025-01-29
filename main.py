@@ -4,11 +4,11 @@ from genetic import Genetic
 import math
  
 table_init_magnitude = 1
-mod_init_magnitude = 0.01
+mod_init_magnitude = 0.1
 rounds_per_game = 20
 matches_per_round = 2
 
-score_both_coop = 3
+score_both_coop = 4
 score_both_def = 1
 score_player_def = 5
 score_opp_def = 0
@@ -16,14 +16,14 @@ score_opp_def = 0
 population_size = 100
 fittest_gene_prob = .5 #the probability that a gene is taken from the more fit parent
 
-mutation_rate = 0.01 
-max_mutation_magnitude = .2
+mutation_rate = 0.1 
+max_mutation_magnitude = .5
 
-number_of_rounds = 250
+number_of_rounds = 500
 
-player_memory = 5
+player_memory = 10
 
-record = False #should fittest be decided by record rather than total score? 
+record = True #should fittest be decided by record rather than total score? 
 
 '''
 player1 = Player(1, 0.01, 20, 2, 1, 3, 0)
@@ -113,6 +113,11 @@ for _ in range(population_size):
     player = Player(player_memory, table_init_magnitude, mod_init_magnitude, rounds_per_game, 
                     score_both_coop, score_both_def, score_player_def, score_opp_def)
     players.append(player)
+
+for i in range(0, len(players[0].decision_matrix)):
+    players[0].decision_matrix[i] = 1
+
+players[0].opp_def_prev_round_weight = -1
 
 rounds_run = 0
 

@@ -53,7 +53,7 @@ class Player():
         size = 2 ** memory
 
         for _ in range(size):
-            self.decision_matrix.append(random.uniform(0, magnitude))
+            self.decision_matrix.append(random.uniform(0.75, magnitude))
 
     def initialize_weight(self, magnitude):
         """
