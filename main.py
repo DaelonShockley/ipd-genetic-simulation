@@ -93,6 +93,21 @@ def print_fittest():
         print(f"{sorted_players[i].wins} - {sorted_players[i].losses} - {sorted_players[i].draws}")
         print("\n")
 
+def run_game_top_two_players(games):
+    fittest_size = int(math.sqrt(len(players)))
+
+    if record:
+        # Sort by wins first, then by draws, then by total_score
+        sorted_players = sorted(players, key=lambda p: (p.wins, p.draws, p.total_score), reverse=True)
+    else:
+        # Sort by total_score first, then by wins, then by draws
+        sorted_players = sorted(players, key=lambda p: (p.total_score, p.wins, p.draws), reverse=True)
+
+    sorted_players = sorted_players[:fittest_size]
+
+    for i in range(games):
+        Game.run_single_game_adv_interactive(sorted_players[0], sorted_players[1], rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+
 players = []
 for _ in range(population_size):
     player = Player(player_memory, table_init_magnitude, mod_init_magnitude, rounds_per_game, 
@@ -113,6 +128,10 @@ while(rounds_run < number_of_rounds):
 Game.run_round(players, matches_per_round, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
 
 print_fittest()
+
+run_game_top_two_players(3)
+
+
 
 
 
