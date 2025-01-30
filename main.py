@@ -22,9 +22,9 @@ fittest_gene_prob = .5 #the probability that a gene is taken from the more fit p
 mutation_rate = 0.1 
 max_mutation_magnitude = .5
 
-number_of_rounds = 100
+number_of_rounds = 200
 
-player_memory = 5
+player_memory = 10
 
 record = False #should fittest be decided by record rather than total score? 
 
@@ -109,7 +109,7 @@ def run_game_top_two_players(games):
     sorted_players = sorted_players[:fittest_size]
 
     for i in range(games):
-        Game.run_single_game_adv_interactive(sorted_players[0], sorted_players[1], rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+        Game.run_single_game_adv_interactive(sorted_players[0], sorted_players[1], player_memory, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
 
 players = []
 for _ in range(population_size):
@@ -126,14 +126,14 @@ rounds_run = 0
 
 while(rounds_run < number_of_rounds):
     #run the round of matches between players
-    Game.run_round(players, matches_per_round, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+    Game.run_round(players, player_memory, matches_per_round, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
 
     players = Genetic.crossover(players, record, fittest_gene_prob, mutation_rate, max_mutation_magnitude)
 
     rounds_run += 1
 
 #one more round since we ended on a crossover phase
-Game.run_round(players, matches_per_round, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+Game.run_round(players, player_memory, matches_per_round, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
 
 print_fittest()
 

@@ -51,9 +51,9 @@ class Player():
         returns:
         none - the array is modified in place
         """
-        self.decision_matrix = [random.uniform(0.75, magnitude) for _ in range(2 ** memory)]
+        self.decision_matrix = [random.uniform(0.75, magnitude) for _ in range(2 ** memory)] 
     
-    def get_decision(self, history, total_opp_defection, total_player_defection, rounds_played, score_diff, opp_defected_last_round, player_defected_last_round):
+    def get_decision(self, history, memory, total_opp_defection, total_player_defection, rounds_played, score_diff, opp_defected_last_round, player_defected_last_round):
         """
         gets the decision of the player based off the decision matrix and modifier weights given game history and ongoing values
 
@@ -77,7 +77,7 @@ class Player():
 
         #the history is given as a binary string, so we can convert that string to decimal in order to get the index of the corresponding 
         #probability from the decision matrix
-        ind = int(history[-5:], 2) if history else 0
+        ind = int(history[-memory:], 2) if history else 0
         table_p = self.decision_matrix[ind]
 
         # Normalize the modifiers' contributions to ensure all modifiers have the same impact

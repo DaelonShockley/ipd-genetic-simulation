@@ -3,7 +3,7 @@ from itertools import combinations
 
 class Game():
     @staticmethod
-    def run_round(players: list[Player], num_games, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
+    def run_round(players: list[Player], memory, num_games, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
         """
         Run a round of games where each unique pair of players plays against each other multiple times.
 
@@ -26,6 +26,7 @@ class Game():
                 Game.run_single_game(
                     player1, 
                     player2, 
+                    memory,
                     rounds_per_game, 
                     score_both_coop, 
                     score_both_def, 
@@ -35,7 +36,7 @@ class Game():
 
 
     @staticmethod
-    def run_single_game(player1: Player, player2: Player, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
+    def run_single_game(player1: Player, player2: Player, memory, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
         '''
         Method to run a single prisoners dilemma game between two players
 
@@ -63,8 +64,8 @@ class Game():
 
         rounds_played = 0
         while(rounds_played < rounds_per_game):
-            player1_decision = player1.get_decision(history_play_2, player2_defections, player1_defections, rounds_played, player1_score - player2_score, player2_defected_last_round, player1_defected_last_round)
-            player2_decision = player2.get_decision(history_play_1, player1_defections, player2_defections, rounds_played, player2_score - player1_score, player1_defected_last_round, player2_defected_last_round)
+            player1_decision = player1.get_decision(history_play_2, memory, player2_defections, player1_defections, rounds_played, player1_score - player2_score, player2_defected_last_round, player1_defected_last_round)
+            player2_decision = player2.get_decision(history_play_1, memory, player1_defections, player2_defections, rounds_played, player2_score - player1_score, player1_defected_last_round, player2_defected_last_round)
 
             player1_defected_last_round = False
             player2_defected_last_round = False
@@ -113,7 +114,7 @@ class Game():
         #print("one game simulatied")
 
     @staticmethod
-    def run_single_game_adv_interactive(player1: Player, player2: Player, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
+    def run_single_game_adv_interactive(player1: Player, player2: Player, memory, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
         '''
         Method to run a single prisoners dilemma game between two players. Same as the other function but with additional printing to help the user see a player strategy in action
 
@@ -143,8 +144,8 @@ class Game():
 
         rounds_played = 0
         while(rounds_played < rounds_per_game):
-            player1_decision = player1.get_decision(history_play_2, player2_defections, player1_defections, rounds_played, player1_score - player2_score, player2_defected_last_round, player1_defected_last_round)
-            player2_decision = player2.get_decision(history_play_1, player1_defections, player2_defections, rounds_played, player2_score - player1_score, player1_defected_last_round, player2_defected_last_round)
+            player1_decision = player1.get_decision(history_play_2, memory, player2_defections, player1_defections, rounds_played, player1_score - player2_score, player2_defected_last_round, player1_defected_last_round)
+            player2_decision = player2.get_decision(history_play_1, memory, player1_defections, player2_defections, rounds_played, player2_score - player1_score, player1_defected_last_round, player2_defected_last_round)
 
             player1_defected_last_round = False
             player2_defected_last_round = False
