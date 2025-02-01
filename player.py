@@ -12,10 +12,10 @@ class Player():
     score_player_def (int): the score given to the player in the event that the player defects but the opponent cooperates 
     score_opp_def (int): the score given to the player in the event that the player cooperates but the opponent defects
     '''
-    def __init__(self, memory, table_init_magnitude, mod_init_magnitude, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def):
+    def __init__(self, memory, table_init_magnitude, mod_init_magnitude, rounds_per_game):
         #initializes decision matrix with a probability of +/- table_init_weight
         self.decision_matrix = []  
-        self.initialize_decision_matrix(memory, table_init_magnitude)
+        self.decision_matrix = [random.uniform(0, table_init_magnitude) for _ in range(2 ** memory)] 
         #initializes all modifier weights to +/- mod_init_magnitude
         self.total_opp_defection_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
         self.opp_defection_rate_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
@@ -33,25 +33,6 @@ class Player():
         self.wins = 0
         self.losses = 0
         self.draws = 0
-
-        self.score_both_coop = score_both_coop
-        self.score_both_def = score_both_def
-        self.score_player_def = score_player_def
-        self.score_opp_def = score_opp_def
-
-    def initialize_decision_matrix(self, memory, magnitude):
-        """
-        fills an empty array with 32 random decimals between 0 and 1
-
-        Parameters: 
-        array (list): an empty array to be filled with decimal values
-        magnitude (float): the maximum value which a decimal in the array can be
-        memory (int): the number of previous rounds the player has access to. Increasing this number could potentially maybe hurt the performance of the simulation a lot (idk use at your own risk). 
-
-        returns:
-        none - the array is modified in place
-        """
-        self.decision_matrix = [random.uniform(0.75, magnitude) for _ in range(2 ** memory)] 
     
     def get_decision(self, history, memory, total_opp_defection, total_player_defection, rounds_played, score_diff, opp_defected_last_round, player_defected_last_round):
         """

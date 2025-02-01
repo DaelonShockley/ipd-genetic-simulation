@@ -11,7 +11,7 @@ mod_init_magnitude = 0.1
 rounds_per_game = 20
 matches_per_round = 2
 
-score_both_coop = 4
+score_both_coop = 3
 score_both_def = 1
 score_player_def = 5
 score_opp_def = 0
@@ -22,7 +22,7 @@ fittest_gene_prob = .5 #the probability that a gene is taken from the more fit p
 mutation_rate = 0.1 
 max_mutation_magnitude = .5
 
-number_of_rounds = 200
+number_of_rounds = 500
 
 player_memory = 10
 
@@ -117,10 +117,10 @@ for _ in range(population_size):
                     score_both_coop, score_both_def, score_player_def, score_opp_def)
     players.append(player)
 
-for i in range(0, len(players[0].decision_matrix)):
+'''for i in range(0, len(players[0].decision_matrix)):
     players[0].decision_matrix[i] = 1
 
-players[0].opp_def_prev_round_weight = -1
+players[0].opp_def_prev_round_weight = -1'''
 
 rounds_run = 0
 
