@@ -75,38 +75,30 @@ class Game():
                 player2_score += score_both_coop
                 history_play_1 += "0"
                 history_play_2 += "0"
-                print("Both players cooperate")
-                print(f"Player 1: {history_play_1} - total score: {player1_score}")
-                print(f"Player 1: {history_play_2} - total score: {player2_score}")
+
             elif(player1_decision and not player2_decision): #player1 defects, player2 cooperates
                 player1_score += score_player_def
                 player2_score += score_opp_def
                 history_play_1 += "1"
                 history_play_2 += "0"
-                print("Player 1 defects, Player 2 cooperates!")
-                print(f"Player 1: {history_play_1} - total score: {player1_score}")
-                print(f"Player 1: {history_play_2} - total score: {player2_score}")
             elif(not player1_decision and player2_decision): #player1 cooperates, player2 defects
                 player1_score += score_opp_def
                 player2_score += score_player_def
                 history_play_1 += "0"
                 history_play_2 += "1"
-                print("Player 1 cooperates, Player 2 defects!")
-                print(f"Player 1: {history_play_1} - total score: {player1_score}")
-                print(f"Player 1: {history_play_2} - total score: {player2_score}")
             else: #both players defect
                 player1_score += score_both_def
                 player2_score += score_both_def
                 history_play_1 += "1"
                 history_play_2 += "1"
-                print("Both players defect!")
-                print(f"Player 1: {history_play_1} - total score: {player1_score}")
-                print(f"Player 1: {history_play_2} - total score: {player2_score}")
 
             rounds_played += 1
 
         player1.total_score += player1_score
         player2.total_score += player2_score
+
+        print(f"Player 1: {history_play_1} - total score: {player1_score}")
+        print(f"Player 1: {history_play_2} - total score: {player2_score}")
 
         if(player1_score > player2_score):
             print("\nPlayer 1 wins!\n")

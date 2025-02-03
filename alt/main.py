@@ -16,7 +16,7 @@ score_player_def = 5
 score_opp_def = 0
 
 population_size = 100
-number_of_rounds = 500
+number_of_rounds = 1000
 
 record = False
 
@@ -33,7 +33,7 @@ def print_fittest():
     sorted_players = sorted_players[:fittest_size]
 
     print(f"TOP {fittest_size} ALGORITHMS AFTER {number_of_rounds} ROUNDS OF SIMULATION")
-    for i in range(0, 2):
+    for i in range(3):
         print("Opponent History Weight:")
         print(players[i].opp_history_weight)
         print("Self History Weight")
@@ -85,7 +85,7 @@ Game.run_round(players, rounds_per_game, games_per_match, score_both_coop, score
 
 print_fittest()
 
-run_game_top_two_players(3)
+run_game_top_two_players(5)
 
 end_time = time.time()
 elapsed_time = end_time - start_time
