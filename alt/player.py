@@ -12,6 +12,9 @@ class Player():
         self.losses = 0
         self.draws = 0
 
+        self.num_defections = 0
+        self.num_cooperations = 0
+
     def get_decision(self, self_history, opp_history):
         '''
         get player decision, result of true means player will defect
@@ -38,9 +41,14 @@ class Player():
         odds = scipy.special.expit(np.mean(probabilities))
 
         if random.random() <= odds:
+            self.num_cooperations += 1
             return False #cooperate
         else:
+            self.num_defections += 1
             return True #defect 
+        
+    def log(self):
+        return [self.total_score, self.wins, self.losses, self.draws, self.num_defections/(self.num_defections + self.num_cooperations)]
 
     
         
