@@ -75,7 +75,7 @@ def log_generation():
 
     total_score = 0
     highest_score = 0
-    lowest_score = 0
+    lowest_score = 5000000
 
     for player in players: 
         stats = player.log()
