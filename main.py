@@ -1,15 +1,15 @@
 from player import Player
 from game import Game
 from genetic import Genetic
-import math
 import time
+import math
+import csv
 
 start_time = time.time()
- 
+
 table_init_magnitude = 1
-mod_init_magnitude = 0.1
 rounds_per_game = 20
-matches_per_round = 2
+games_per_match = 100
 
 score_both_coop = 3
 score_both_def = 1
@@ -17,42 +17,9 @@ score_player_def = 5
 score_opp_def = 0
 
 population_size = 100
-fittest_gene_prob = .5 #the probability that a gene is taken from the more fit parent
+number_of_rounds = 20
 
-mutation_rate = 0.1 
-max_mutation_magnitude = .5
-
-number_of_rounds = 500
-
-player_memory = 10
-
-record = False #should fittest be decided by record rather than total score? 
-
-'''
-player1 = Player(1, 0.01, 20, 2, 1, 3, 0)
-
-print(player1.decision_matrix)
-print(player1.total_opp_defection_weight)
-print(player1.opp_defection_rate_weight)
-print(player1.total_player_defections_weight)
-print(player1.total_player_defections_weight)
-print(player1.rounds_played_weight)
-print(player1.rounds_left_weight)
-print(player1.score_diff_weight)
-print("\n")
-player1.total_score += 1
-player1.wins += 1
-print(player1.rounds_per_game)
-print(player1.total_score)
-print(player1.wins)
-print("\n")
-print(player1.score_both_coop)
-print(player1.score_both_def)
-print(player1.score_player_def)
-print(player1.score_opp_def)
-
-print(player1.get_decision("01", 2, 3, 5, 2))
-'''
+record = False
 
 def print_fittest():
     fittest_size = int(math.sqrt(len(players)))
@@ -67,34 +34,20 @@ def print_fittest():
     sorted_players = sorted_players[:fittest_size]
 
     print(f"TOP {fittest_size} ALGORITHMS AFTER {number_of_rounds} ROUNDS OF SIMULATION")
-    for i in range(0, len(sorted_players)):
-        print(f"rank {i+1} player")
-        print("Decision matrix: ")
-        print(sorted_players[i].decision_matrix)
-        print("Total Opponent Defection Weight:")
-        print(sorted_players[i].total_opp_defection_weight)
-        print("Total Opponent Defection Rate Weight:")
-        print(sorted_players[i].opp_defection_rate_weight)
-        print("Total Player Defection Weight:")
-        print(sorted_players[i].total_player_defections_weight)
-        print("Total Player Defection Rate Weight:")
-        print(sorted_players[i].total_player_defections_weight)
-        print("Rounds Played Weight:")
-        print(sorted_players[i].rounds_played_weight)
-        print("Rounds Left Weight:")
-        print(sorted_players[i].rounds_left_weight)
-        print("Score Differential Weight:")
-        print(sorted_players[i].score_diff_weight)
-        print("Opponent Defected Last Round Weight:")
-        print(sorted_players[i].opp_def_prev_round_weight)
-        print("Player Defected Last Round Weight:")
-        print(sorted_players[i].player_def_prev_round_weight)
-        print("\n")
-        print(f"Total score after facing {population_size - 1} opponents {matches_per_round} times")
+    for i in range(3):
+        print("Opponent History Weight:")
+        print(players[i].opp_history_weight)
+        print("Self History Weight")
+        print(players[i].self_history_weight)
+
+        print(f"Total score after facing {population_size - 1} opponents {games_per_match} times")
         print(sorted_players[i].total_score)
+        print("Player defection rate:")
+        print(sorted_players[i].num_defections/(sorted_players[i].num_defections + sorted_players[i].num_cooperations))
         print("Player record:")
         print(f"{sorted_players[i].wins} - {sorted_players[i].losses} - {sorted_players[i].draws}")
         print("\n")
+
 
 def run_game_top_two_players(games):
     fittest_size = int(math.sqrt(len(players)))
@@ -109,44 +62,78 @@ def run_game_top_two_players(games):
     sorted_players = sorted_players[:fittest_size]
 
     for i in range(games):
-        Game.run_single_game_adv_interactive(sorted_players[0], sorted_players[1], player_memory, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+        Game.run_single_game_interactive(sorted_players[0], sorted_players[1], rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+
+def log_generation():
+    total_defection_rate = 0
+    highest_defection = 0
+    lowest_defection = 1
+
+    total_wins = 0
+    total_losses = 0
+    total_draws = 0
+
+    total_score = 0
+    highest_score = 0
+    lowest_score = 5000000
+
+    for player in players: 
+        stats = player.log()
+
+        total_score += stats[0]
+        total_wins += stats[1]
+        total_losses += stats[2]
+        total_draws += stats[3]
+        total_defection_rate += stats[4]
+
+        if stats[4] > highest_defection:
+            highest_defection = stats[4]
+        elif stats[4] < lowest_defection:
+            lowest_defection = stats[4]
+
+        if stats[0] > highest_score:
+            highest_score = stats[0]
+        elif stats[0] < lowest_score:
+            lowest_score = stats[0]
+
+    with open("final_results.csv", "a", newline="") as file:
+        writer = csv.writer(file)
+        #[generation, highest_score, average_score, lowest_score, total_wins, total_losses, total_draws, highest_defection_rate, average_defection_rate, lowest_defection_rate]
+        writer.writerow([rounds_run, highest_score, total_score/100, lowest_score, total_wins, total_losses, total_draws, highest_defection, total_defection_rate/100, lowest_defection])
+
 
 players = []
 for _ in range(population_size):
-    player = Player(player_memory, table_init_magnitude, mod_init_magnitude, rounds_per_game, 
-                    score_both_coop, score_both_def, score_player_def, score_opp_def)
+    player = Player(table_init_magnitude, rounds_per_game)
     players.append(player)
-
-'''for i in range(0, len(players[0].decision_matrix)):
-    players[0].decision_matrix[i] = 1
-
-players[0].opp_def_prev_round_weight = -1'''
 
 rounds_run = 0
 
 while(rounds_run < number_of_rounds):
     #run the round of matches between players
-    Game.run_round(players, player_memory, matches_per_round, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+    gen_time = time.time()
+    Game.run_round(players, rounds_per_game, games_per_match, score_both_coop, score_both_def, score_player_def, score_opp_def)
 
-    players = Genetic.crossover(players, record, fittest_gene_prob, mutation_rate, max_mutation_magnitude)
+    log_generation()
+
+    players = Genetic.crossover(players, record)
 
     rounds_run += 1
+    gen_end = time.time()
+    gen_time_elapsed = gen_end - gen_time
+    print(f"generation {rounds_run}/{number_of_rounds} completed in {gen_time_elapsed:.6f} seconds")
 
 #one more round since we ended on a crossover phase
-Game.run_round(players, player_memory, matches_per_round, rounds_per_game, score_both_coop, score_both_def, score_player_def, score_opp_def)
+Game.run_round(players, rounds_per_game, games_per_match, score_both_coop, score_both_def, score_player_def, score_opp_def)
+log_generation()
 
 print_fittest()
 
-run_game_top_two_players(3)
+run_game_top_two_players(5)
 
 end_time = time.time()
 elapsed_time = end_time - start_time
 
 print(f"Execution time: {elapsed_time:.6f} seconds")
-
-
-
-
-
 
 

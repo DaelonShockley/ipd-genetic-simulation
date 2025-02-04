@@ -32,7 +32,6 @@ class Genetic():
 
         sorted_players = sorted_players[:fittest_size]
         
-        #copy the previous rounds most fit into the new population, resetting stats
         new_players = []
         for player in sorted_players:
             new_player = copy.deepcopy(player)
@@ -50,7 +49,7 @@ class Genetic():
         #to do: introduce mutations to new_players
 
         return new_players
-    
+
     @staticmethod
     def single_crossover(player1: Player, player2: Player, fitter_gene_prob):
         '''
@@ -69,9 +68,18 @@ class Genetic():
 
         new_player = copy.deepcopy(player1)
 
-        for i in range(0, len(player1.opp_history_weight)):
-            new_player.opp_history_weight[i] = random.choices([player1.opp_history_weight[i], player2.opp_history_weight[i]], weights=weights, k=1)[0]
-            new_player.self_history_weight[i] = random.choices([player1.self_history_weight[i], player2.self_history_weight[i]], weights=weights, k=1)[0]
+        for i in range(0, len(player1.decision_matrix)):
+            new_player.decision_matrix[i] = random.choices([player1.decision_matrix[i], player2.decision_matrix[i]], weights=weights, k=1)[0]
+
+        new_player.total_opp_defection_weight = random.choices([player1.total_opp_defection_weight, player2.total_opp_defection_weight], weights=weights, k=1)[0]
+        new_player.opp_defection_rate_weight = random.choices([player1.opp_defection_rate_weight, player2.opp_defection_rate_weight], weights=weights, k=1)[0]
+        new_player.total_player_defections_weight =random.choices([player1.total_player_defections_weight, player2.total_player_defections_weight], weights=weights, k=1)[0]
+        new_player.player_defection_rate_weight =random.choices([player1.player_defection_rate_weight, player2.player_defection_rate_weight], weights=weights, k=1)[0]
+        new_player.rounds_played_weight =random.choices([player1.rounds_played_weight, player2.rounds_played_weight], weights=weights, k=1)[0]
+        new_player.rounds_left_weight =random.choices([player1.rounds_left_weight, player2.rounds_left_weight], weights=weights, k=1)[0]
+        new_player.score_diff_weight =random.choices([player1.score_diff_weight, player2.score_diff_weight], weights=weights, k=1)[0]
+        new_player.opp_def_prev_round_weight =random.choices([player1.opp_def_prev_round_weight, player2.opp_def_prev_round_weight], weights=weights, k=1)[0]
+        new_player.player_def_prev_round_weight =random.choices([player1.player_def_prev_round_weight, player2.player_def_prev_round_weight], weights=weights, k=1)[0]
 
         new_player.total_score = 0
         new_player.wins = 0
@@ -81,7 +89,7 @@ class Genetic():
         return new_player
     
     @staticmethod
-    def introduce_mutation(new_player: Player, mutation_rate, max_mutation_magnitude):
+    def introduce_mutation(new_player, mutation_rate, max_mutation_magnitude):
         '''
         Introduces mutations to the decision matrix and weight attributes of a player.
         
@@ -101,12 +109,19 @@ class Genetic():
             return value
 
         # Mutate the decision matrix
-        new_player.opp_history_weight = [
-            mutate_value(val) for val in new_player.opp_history_weight
+        new_player.decision_matrix = [
+            mutate_value(val) for val in new_player.decision_matrix
         ]
 
-        new_player.self_history_weight = [
-            mutate_value(val) for val in new_player.self_history_weight
-        ]
+        # Mutate all weight attributes
+        new_player.total_opp_defection_weight = mutate_value(new_player.total_opp_defection_weight)
+        new_player.opp_defection_rate_weight = mutate_value(new_player.opp_defection_rate_weight)
+        new_player.total_player_defections_weight = mutate_value(new_player.total_player_defections_weight)
+        new_player.player_defection_rate_weight = mutate_value(new_player.player_defection_rate_weight)
+        new_player.rounds_played_weight = mutate_value(new_player.rounds_played_weight)
+        new_player.rounds_left_weight = mutate_value(new_player.rounds_left_weight)
+        new_player.score_diff_weight = mutate_value(new_player.score_diff_weight)
+        new_player.opp_def_prev_round_weight = mutate_value(new_player.opp_def_prev_round_weight)
+        new_player.player_def_prev_round_weight = mutate_value(new_player.player_def_prev_round_weight)
 
         return new_player
