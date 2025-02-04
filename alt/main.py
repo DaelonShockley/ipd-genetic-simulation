@@ -9,7 +9,7 @@ start_time = time.time()
 
 table_init_magnitude = 1
 rounds_per_game = 20
-games_per_match = 2
+games_per_match = 100
 
 score_both_coop = 3
 score_both_def = 1
@@ -17,7 +17,7 @@ score_player_def = 5
 score_opp_def = 0
 
 population_size = 100
-number_of_rounds = 4500
+number_of_rounds = 20
 
 record = False
 
@@ -125,7 +125,6 @@ while(rounds_run < number_of_rounds):
 
 #one more round since we ended on a crossover phase
 Game.run_round(players, rounds_per_game, games_per_match, score_both_coop, score_both_def, score_player_def, score_opp_def)
-rounds_run += 1
 log_generation()
 
 print_fittest()
