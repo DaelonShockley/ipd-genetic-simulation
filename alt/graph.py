@@ -54,17 +54,17 @@ plt.show()
 
 # Convert to NumPy arrays
 x = df["generation"].to_numpy()
-y = df["total_wins"].to_numpy()
-y_low = df["total_losses"].to_numpy()
-y_high = df["total_draws"].to_numpy()
+total_games = (df["total_wins"] + df["total_losses"] + df["total_draws"]).to_numpy()
+decisive_percentage = ((df["total_wins"] + df["total_losses"]) / total_games * 100).to_numpy()
+non_decisive_percentage = ((df["total_draws"] / total_games) * 100).to_numpy()
 
-# Plot Average Defection with range
+# Plot percentages of decisive and non-decisive games
 plt.figure(figsize=(10, 5))
-plt.plot(x, y_low, label="Decisive Games Over Time", color="blue")
-plt.plot(x, y_high, label="Draws Over Time", color="grey")
+plt.plot(x, decisive_percentage, label="Decisive Games (%)", color="blue")
+plt.plot(x, non_decisive_percentage, label="Non-Decisive Games (%)", color="grey")
 plt.xlabel("Generation")
-plt.ylabel("Decisive Games vs Draws")
-plt.title("Change in Record Over Generations (with Range)")
+plt.ylabel("Percentage of Games")
+plt.title("Decisive vs Non-Decisive Game Percentages Over Generations")
 plt.legend()
 plt.grid()
 plt.show()
