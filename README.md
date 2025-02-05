@@ -1,7 +1,7 @@
 # Iterated Prisoner's Dilemma Simulated via Genetic Algorithm
 
 ## Description
-THIS IS A WORK IN PROGRESS
+THIS IS A WORK IN PROGRESS <br />
 At the time of writing, this simulation isn't perfect and details may change
 
 This project is genetic algorithm simulation of the stochastic iterated prisoners dilemma. Simulation parameters are easily changeable within the main.py script. The simulation consists of a population of "players" who are instances of the player class. These players assign weights to the actions of their opponents and themselves, calculating a probability 
@@ -17,7 +17,7 @@ the generations.
 I'm still troubleshooting some of the math in this simulation, once I get a result I'm happy with, my plan is the rewrite the simulation in JavaScript and implement a UI which would allow the user to set simulation characteristics, add their own player, simulate a game between two players, and more fun stuff. 
 
 ## Inspirations and References
-https://www.youtube.com/watch?v=nr8biZfSZ3Y
-https://www.youtube.com/watch?v=mScpHTIi-kM
-https://cs.stanford.edu/people/eroberts/courses/soco/projects/1998-99/game-theory/npd.html
-https://www.datacamp.com/tutorial/genetic-algorithm-python
+https://www.youtube.com/watch?v=nr8biZfSZ3Y <br />
+https://www.youtube.com/watch?v=mScpHTIi-kM <br />
+https://cs.stanford.edu/people/eroberts/courses/soco/projects/1998-99/game-theory/npd.html <br />
+https://www.datacamp.com/tutorial/genetic-algorithm-python 
