@@ -4,6 +4,7 @@ from genetic import Genetic
 import time
 import math
 import csv
+import os
 
 start_time = time.time()
 
@@ -100,6 +101,14 @@ def log_generation():
         writer = csv.writer(file)
         #[generation, highest_score, average_score, lowest_score, total_wins, total_losses, total_draws, highest_defection_rate, average_defection_rate, lowest_defection_rate]
         writer.writerow([rounds_run, highest_score, total_score/100, lowest_score, total_wins, total_losses, total_draws, highest_defection, total_defection_rate/100, lowest_defection])
+
+
+####################################################
+# MAIN EXECUTION BEGINS HERE
+####################################################
+
+if os.path.exists("final_results.csv"):
+    os.remove("final_results.csv")
 
 
 with open("final_results.csv", "a", newline="") as file:
