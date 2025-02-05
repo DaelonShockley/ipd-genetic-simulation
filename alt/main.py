@@ -9,11 +9,11 @@ start_time = time.time()
 
 table_init_magnitude = 1
 rounds_per_game = 20
-games_per_match = 10
+games_per_match = 100
 
-score_both_coop = 4
+score_both_coop = 3
 score_both_def = 1
-score_player_def = 6
+score_player_def = 5
 score_opp_def = 0
 
 population_size = 100
@@ -101,11 +101,6 @@ def log_generation():
         #[generation, highest_score, average_score, lowest_score, total_wins, total_losses, total_draws, highest_defection_rate, average_defection_rate, lowest_defection_rate]
         writer.writerow([rounds_run, highest_score, total_score/100, lowest_score, total_wins, total_losses, total_draws, highest_defection, total_defection_rate/100, lowest_defection])
 
-
-with open("final_results.csv", "a", newline="") as file:
-        writer = csv.writer(file)
-        #[generation, highest_score, average_score, lowest_score, total_wins, total_losses, total_draws, highest_defection_rate, average_defection_rate, lowest_defection_rate]
-        writer.writerow(["generation","highest_score","average_score","lowest_score","total_wins","total_losses","total_draws","highest_defection_rate","average_defection_rate","lowest_defection_rate"])
 
 players = []
 for _ in range(population_size):

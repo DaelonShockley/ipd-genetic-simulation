@@ -28,8 +28,6 @@ class Genetic():
         # Sort by total_score first, then by wins, then by draws
             sorted_players = sorted(players, key=lambda p: (p.total_score, p.wins, p.draws), reverse=True)
 
-        
-
         sorted_players = sorted_players[:fittest_size]
         
         #copy the previous rounds most fit into the new population, resetting stats
