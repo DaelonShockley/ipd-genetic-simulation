@@ -26,10 +26,11 @@ class Player():
             probabilities.append(self.self_history_weight[0][0])
             odds = np.mean(probabilities)
             if random.random() <= odds:
+                self.num_cooperations += 1
                 return False #cooperate
             else:
+                self.num_defections += 1
                 return True #defect 
-
 
         for i in range(len(opp_history) + 1):
             probabilities.append(self.opp_history_weight[i-1][int(opp_history[-i])])
