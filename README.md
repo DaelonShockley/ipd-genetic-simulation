@@ -14,7 +14,7 @@ Simply clone the repository and install the necessary requirements (I will impro
 the generations. 
  
 ## Future plans
-I'm still troubleshooting some of the math in this simulation, once I get a result I'm happy with, my plan is the rewrite the simulation in JavaScript and implement a UI which would allow the user to set simulation characteristics, add their own player, simulate a game between two players, and more fun stuff. 
+I'm still troubleshooting some of the math in this simulation, once I get a result I'm happy with, my plan is the rewrite the simulation in JavaScript and implement a UI which would allow the user to set simulation characteristics, add their own player, simulate a game between two players, and more fun stuff.  
 
 ## Inspirations and References
 https://www.youtube.com/watch?v=nr8biZfSZ3Y <br />
