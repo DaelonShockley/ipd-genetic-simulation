@@ -27,7 +27,6 @@ class Player():
         self.opp_def_prev_round_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
         self.player_def_prev_round_weight = random.uniform(-mod_init_magnitude, mod_init_magnitude)
 
-
         self.rounds_per_game = rounds_per_game
         self.total_score = 0
         self.wins = 0
