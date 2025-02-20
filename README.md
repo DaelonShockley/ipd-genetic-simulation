@@ -11,7 +11,7 @@ a bit of random variance in the attributes of the new players. This process of c
 
 ## Installation and usage
 Simply clone the repository and install the necessary requirements (I will improve this process when the simulation is more complete). Then run main.py to run the simulation (make sure to set values at the top of main.py if you want specific characteristics). After running, you can run graph.py to see a couple graphs of simulation trends over
-the generations. 
+the generations.  
  
 ## Future plans
 I'm still troubleshooting some of the math in this simulation, once I get a result I'm happy with, my plan is the rewrite the simulation in JavaScript and implement a UI which would allow the user to set simulation characteristics, add their own player, simulate a game between two players, and more fun stuff.  
